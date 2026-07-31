@@ -262,12 +262,7 @@ const lenis = new Lenis({
   autoRaf: true,
 });
 
-// Keep ScrollTrigger in sync with Lenis smooth scroll
 lenis.on("scroll", ScrollTrigger.update);
-gsap.ticker.add((time) => {
-  lenis.raf(time * 1000);
-});
-gsap.ticker.lagSmoothing(0);
 
 
 /***************************************************
@@ -308,6 +303,7 @@ document.querySelectorAll(".parallax-wrap").forEach((wrap) => {
         start: "top bottom",
         end: "bottom top",
         scrub: true,
+        markers:true
       },
     }
   );
@@ -317,22 +313,22 @@ document.querySelectorAll(".parallax-wrap").forEach((wrap) => {
 /***************************************************
  * 12. Background Image Parallax (Why Choose Us / Banner)
  ***************************************************/
-document.querySelectorAll(".why-choose-us-top, .parallax-banner").forEach((el) => {
-  gsap.fromTo(
-    el,
-    { backgroundPositionY: "0%" },
-    {
-      backgroundPositionY: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: el,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    }
-  );
-});
+// document.querySelectorAll(".why-choose-us-top, .parallax-banner").forEach((el) => {
+//   gsap.fromTo(
+//     el,
+//     { backgroundPositionY: "0%" },
+//     {
+//       backgroundPositionY: "100%",
+//       ease: "none",
+//       scrollTrigger: {
+//         trigger: el,
+//         start: "top bottom",
+//         end: "bottom top",
+//         scrub: true,
+//       },
+//     }
+//   );
+// });
 
 
 /***************************************************
