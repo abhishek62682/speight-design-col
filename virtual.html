@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prime Location | 360° Virtual Tour</title>
+
+  <!-- ==================== FONTS ==================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet" />
+
+  <!-- ==================== TAILWIND (JS-based) ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- ==================== PANNELLUM (360 viewer) ==================== -->
+  <link rel="stylesheet" href="https://cdn.pannellum.org/2.5/pannellum.css">
+  <script src="https://cdn.pannellum.org/2.5/pannellum.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --font-primary: "DM Sans", sans-serif;
+      --font-secondary: "DM Sans", sans-serif;
+      --max-w-8xl: 1320px;
+    }
+  </style>
+
+  <style>
+    body {
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .doorway-spot {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .doorway-spot svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .doorway-spot__label {
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      white-space: nowrap;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .panorama-loader.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panorama-room-name.is-swapping {
+      opacity: 0;
+    }
+
+    .room-thumb {
+      width: 64px;
+      height: 44px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .room-thumb.is-active {
+      border-color: #fff;
+    }
+
+    .room-thumb__label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-family: "DM Sans", sans-serif;
+      font-size: 9px;
+      color: #fff;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
+      line-height: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== Prime Location Section ==================== -->
+  <section class="location-frame bg-white">
+    <div class="py-[80px] sm:py-[100px] lg:py-[135px]">
+      <div class="max-w-8xl mx-auto px-[15px]">
+
+        <div class="flex flex-col items-center text-center">
+          <h2
+            class="text-[52px] sm:text-[75px] md:text-[95px] lg:text-[113px] leading-[0.95] font-medium font-primary text-[#111]">
+           EXPLORE THE PROJECT
+
+          </h2>
+
+          <div class="mt-10 sm:mt-12 inline-flex items-center rounded-full border border-[#11111126] px-6 sm:px-10 py-4 sm:py-5">
+            <p class="font-primary text-[14px] sm:text-[16px] font-medium text-[#111]">
+              360° Interactive Virtual Tour
+            </p>
+          </div>
+
+          <p
+            class="mt-8 sm:mt-10 text-[14px] sm:text-[15px] leading-[24px] sm:leading-[27px] font-secondary text-[#666] max-w-[700px]">
+            Take a virtual walkthrough of this project and experience every space as if you were there. Explore room by room, understand the layout, and discover the design details from every angle.
+          </p>
+        </div>
+
+        <!-- Panorama Box Start -->
+        <div class="panorama-box relative mt-14 lg:mt-16 w-full h-[380px] sm:h-[500px] lg:h-[680px] bg-black overflow-hidden">
+
+          <div id="panorama-360" class="panorama-360 w-full h-full"></div>
+
+          <div class="panorama-loader is-hidden absolute inset-0 z-10 flex items-center justify-center bg-black/60 text-white font-primary text-[15px] transition-opacity duration-300"
+            id="panoramaLoader">
+            <p>Opening the room<span>...</span></p>
+          </div>
+
+          <div class="panorama-room-name absolute top-5 left-5 z-10 text-white font-primary text-[16px] sm:text-[18px] font-medium transition-opacity duration-200"
+            id="panoramaRoomName">
+            The Living Room
+          </div>
+
+          <div class="panorama-controls absolute top-5 right-5 z-10 flex gap-2">
+            <button type="button" id="panoZoomIn" aria-label="Zoom in"
+              class="size-9 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors">+</button>
+            <button type="button" id="panoZoomOut" aria-label="Zoom out"
+              class="size-9 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors">−</button>
+            <button type="button" id="panoFullscreen" aria-label="Fullscreen"
+              class="size-9 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors">⛶</button>
+          </div>
+
+          <!-- Room Picker Thumbnails -->
+          <nav class="panorama-room-picker absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex gap-3 px-2"
+            id="panoramaRoomPicker" aria-label="Jump to a room"></nav>
+        </div>
+        <!-- Panorama Box End -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== JS ==================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof pannellum === "undefined") return;
+
+      // 👇 apne real rooms/photos yaha define karo. Har room ek scene hai.
+      const ROOMS = {
+        livingRoom: {
+          title: "The Living Room",
+          panorama:
+            "https://l13.alamy.com/360/2EAK5X8/360-degree-panorama-of-an-upmarket-living-room-interior-with-beige-decor-modern-furniture-and-personal-effects-2EAK5X8.jpg",
+          pitch: 0,
+          yaw: 0,
+          hfov: 100,
+          hotSpots: [
+            { pitch: -2, yaw: 65, sceneId: "kitchen", label: "To the Kitchen" },
+            { pitch: -2, yaw: 165, sceneId: "bedroom", label: "To the Bedroom" },
+          ],
+        },
+        kitchen: {
+          title: "The Kitchen",
+          panorama:
+            "https://images.unsplash.com/photo-1557971370-e7298ee473fb?q=80&w=2920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          pitch: 0,
+          yaw: 30,
+          hfov: 100,
+          hotSpots: [
+            { pitch: -2, yaw: -150, sceneId: "livingRoom", label: "Back to Living Room" },
+            { pitch: -2, yaw: 60, sceneId: "dining", label: "To the Dining Room" },
+          ],
+        },
+        bedroom: {
+          title: "The Bedroom",
+          panorama:
+            "https://framerusercontent.com/images/aDtGubgGAeXhajjsmNZuK79LE.png?scale-down-to=1024&width=1200&height=686",
+          pitch: 0,
+          yaw: 0,
+          hfov: 100,
+          hotSpots: [
+            { pitch: -2, yaw: -20, sceneId: "livingRoom", label: "Back to Living Room" },
+          ],
+        },
+        dining: {
+          title: "The Dining Room",
+          panorama:
+            "https://static.vecteezy.com/system/resources/previews/015/631/918/non_2x/full-seamless-hdri-360-panorama-in-interior-of-guest-living-room-hall-with-kitchen-in-studio-apartment-with-table-sofa-and-tv-in-equirectangular-spherical-projection-vr-content-photo.jpg",
+          pitch: 0,
+          yaw: 0,
+          hfov: 110,
+          hotSpots: [
+            { pitch: -2, yaw: 140, sceneId: "kitchen", label: "Back to Kitchen" },
+          ],
+        },
+      };
+      const ROOM_ORDER = ["livingRoom", "kitchen", "bedroom", "dining"];
+
+      const sceneConfig = {};
+      Object.keys(ROOMS).forEach((id) => {
+        const room = ROOMS[id];
+        sceneConfig[id] = {
+          title: room.title,
+          type: "equirectangular",
+          panorama: room.panorama,
+          pitch: room.pitch,
+          yaw: room.yaw,
+          hfov: room.hfov,
+          hotSpots: room.hotSpots.map((h) => ({
+            pitch: h.pitch,
+            yaw: h.yaw,
+            type: "scene",
+            sceneId: h.sceneId,
+            text: h.label,
+            cssClass: "doorway-spot",
+            createTooltipFunc: (div, args) => {
+              div.innerHTML =
+                '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+                '<span class="doorway-spot__label">' +
+                args +
+                "</span>";
+            },
+            createTooltipArgs: h.label,
+          })),
+        };
+      });
+
+      const viewer = pannellum.viewer("panorama-360", {
+        default: {
+          firstScene: "livingRoom",
+          autoLoad: true,
+          showControls: false,
+          compass: false,
+          autoRotate: -1.5,
+          friction: 0.15,
+          minHfov: 50,
+          maxHfov: 120,
+        },
+        scenes: sceneConfig,
+      });
+
+      const loaderEl = document.getElementById("panoramaLoader");
+      const roomNameEl = document.getElementById("panoramaRoomName");
+      const roomPickerEl = document.getElementById("panoramaRoomPicker");
+      const zoomInBtn = document.getElementById("panoZoomIn");
+      const zoomOutBtn = document.getElementById("panoZoomOut");
+      const fullscreenBtn = document.getElementById("panoFullscreen");
+      const boxEl = document.querySelector(".panorama-box");
+
+      function buildRoomPicker(activeId) {
+        roomPickerEl.innerHTML = "";
+        ROOM_ORDER.forEach((id) => {
+          const room = ROOMS[id];
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "room-thumb" + (id === activeId ? " is-active" : "");
+          btn.style.backgroundImage = `url("${room.panorama}")`;
+          btn.setAttribute("aria-label", `Go to ${room.title}`);
+          btn.innerHTML = `<span class="room-thumb__label">${room.title.replace("The ", "")}</span>`;
+          btn.addEventListener("click", () => {
+            if (id !== viewer.getScene()) viewer.loadScene(id);
+          });
+          roomPickerEl.appendChild(btn);
+        });
+      }
+      buildRoomPicker("livingRoom");
+
+      viewer.on("load", () => {
+        loaderEl.classList.add("is-hidden");
+        setTimeout(() => viewer.setAutoRotate(0), 2500);
+      });
+
+      viewer.on("scenechange", (sceneId) => {
+        loaderEl.classList.remove("is-hidden");
+        roomNameEl.classList.add("is-swapping");
+        setTimeout(() => {
+          roomNameEl.textContent = ROOMS[sceneId].title;
+          roomNameEl.classList.remove("is-swapping");
+        }, 220);
+        buildRoomPicker(sceneId);
+      });
+
+      zoomInBtn.addEventListener("click", () =>
+        viewer.setHfov(viewer.getHfov() - 8, true),
+      );
+      zoomOutBtn.addEventListener("click", () =>
+        viewer.setHfov(viewer.getHfov() + 8, true),
+      );
+
+      fullscreenBtn.addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          (boxEl.requestFullscreen || boxEl.webkitRequestFullscreen)?.call(boxEl);
+        } else {
+          (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+        }
+        setTimeout(() => viewer.resize(), 100);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
+
+ <section class="bg-white  overflow-hidden py-10">
+
+  <style>
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      animation: marquee-scroll 25s linear infinite;
+    }
+    .marquee-wrapper:hover .marquee-track {
+      animation-play-state: paused;
+    }
+  </style>
+
+  <div class="marquee-wrapper w-full overflow-hidden">
+    <div class="marquee-track flex items-center whitespace-nowrap w-max">
+
+      <!-- Set 1 -->
+      <div class="flex items-center gap-10 px-5">
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">Real Architects for Aspiring</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">Highly-Trained Architects Ready</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">Building Great Infrastructures</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">One Step Towards Excellence</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+      </div>
+
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="flex items-center gap-10 px-5">
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">Real Architects for Aspiring</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">Highly-Trained Architects Ready</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">Building Great Infrastructures</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+        <span class="text-[17px] font-primary leading-[19px] font-medium uppercase text-black">One Step Towards Excellence</span>
+        <span class="size-[6px] rounded-full bg-black shrink-0"></span>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+      <!--  Footer Section  -->
+<footer class="footer-frame bg-black">
+  <div class="pt-[80px] sm:pt-[100px] lg:pt-[120px] pb-[30px]">
+    <div class="max-w-8xl mx-auto px-[15px]">
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6">
+
+        
+        <div class="lg:col-span-3 space-y-8">
+          <div class="flex items-center gap-3">
+            <img class="w-20 lg:w-24" src="/assets/img/logo/logo-white.png" alt="Maiko Archi">
+          </div>
+
+          <div class="space-y-4 text-[14px] leading-[24px] text-[#8a8a8a]">
+            <p class="text-white text-[15px] font-primary">Address Studios</p>
+            <p>77, C-204, Shivsagar Heights, Tilak Nagar, Chembur, Mumbai 400089</p>
+            <p>Mail Us: <a href="mailto:siddhantpurandare83@gmail.com" class="text-white hover:opacity-70 transition-opacity">siddhantpurandare83@gmail.com</a></p>
+            <p>Call Us: <a href="tel:+919833996371" class="text-white hover:opacity-70 transition-opacity">+91 9833996371</a></p>
+          </div>
+        </div>
+
+        
+        <div class="lg:col-span-2">
+          <h5 class="font-primary text-white text-[15px] tracking-[1.5px] font-medium uppercase mb-6">Navigation</h5>
+          <ul class="space-y-4 text-[14px] text-[#8a8a8a]">
+            <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="#studio" class="hover:text-white transition-colors">The Studio</a></li>
+            <li><a href="#services" class="hover:text-white transition-colors">Services</a></li>
+            <li><a href="#works" class="hover:text-white transition-colors">Works</a></li>
+            <li><a href="#contact" class="hover:text-white transition-colors">Contact Us</a></li>
+          </ul>
+        </div>
+
+       
+        <div class="lg:col-span-2">
+          <h5 class="font-primary text-white text-[15px] tracking-[1.5px] font-medium uppercase mb-6">Our Services</h5>
+          <ul class="space-y-4 text-[14px] text-[#8a8a8a]">
+            <li><a href="#services" class="hover:text-white transition-colors">Architecture</a></li>
+            <li><a href="#services" class="hover:text-white transition-colors">Interior Design</a></li>
+            <li><a href="#services" class="hover:text-white transition-colors">PMC</a></li>
+          </ul>
+        </div>
+
+        
+        <div class="lg:col-span-4 lg:col-start-9">
+          <h5 class="font-primary text-white text-[18px] sm:text-[20px] leading-[28px] font-medium mb-8">
+            Would You Like to Learn More About Our Projects and Expertise?
+          </h5>
+
+          <a href="#"
+            class="arrow-btn w-full relative h-12 md:h-[54px] border border-[#343434] font-normal font-primary px-6 sm:px-8 text-[14px] sm:text-[15px] inline-flex justify-between text-white items-center gap-4">
+            <span>Get Architecture Consulting</span>
+            <svg class="arrow w-[24px] sm:w-[28px] shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1230.3 556.2" fill="none">
+              <line class="arrow-line" x1="22.7" y1="279.2" x2="1165.3" y2="279.2" stroke="currentColor" stroke-width="55" stroke-linecap="round" />
+              <polyline class="arrow-head" points="983.5,91.5 1165.3,279.2 983.5,464.7" fill="none" stroke="currentColor" stroke-width="55" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+
+          <div class="flex items-center gap-4 mt-10">
+            <a href="#" class="size-11 rounded-full border border-[#343434] flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors duration-300"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="size-11 rounded-full border border-[#343434] flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors duration-300"><i class="ri-twitter-fill"></i></a>
+            <a target="_blank" href="https://www.instagram.com/speightdesigns/" class="size-11 rounded-full border border-[#343434] flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors duration-300"><i class="ri-instagram-fill"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="w-full h-px bg-[#343434] mt-16 lg:mt-20 mb-8"></div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-[#8a8a8a] text-center">
+        <p>Copyright © 2026 Speight Designs. All Rights Reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-white transition-colors">Terms of use</a>
+          <span class="hidden sm:inline">/</span>
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+
+ <!-- Process Section  -->
+      <section id="process" class="process-frame bg-cream">
+        <div class="py-[70px] sm:py-[90px] lg:py-[120px]">
+          <div class="max-w-8xl mx-auto px-[15px]">
+
+            <!-- HEADING ROW -->
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 lg:gap-10 pb-8 sm:pb-10 lg:pb-12 border-b border-[#11111126]">
+              <h2 class="text-[52px] sm:text-[75px] md:text-[95px] lg:text-[113px] leading-[0.95] font-medium font-primary text-[#111]">
+               Our Process
+              </h2>
+              <p class="text-[15px] sm:text-[16px] leading-[26px] sm:leading-[28px] font-secondary text-[#666] max-w-[430px] pb-2 lg:pb-4">
+                From concept to completion, we ensure every project is carefully planned, expertly executed, and delivered with attention to every detail.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-14 lg:mt-16 gap-[30px]">
+
+              <!-- ===== Process Card 1 ===== -->
+              <div class="process-card group relative overflow-hidden bg-white border border-[#11111126] cursor-pointer transition-colors duration-400 ease-out hover:bg-[#111]">
+                <div class="flex flex-col items-center text-center px-8 sm:px-10 py-14 sm:py-16">
+                  <div class="size-[70px] sm:size-[80px] flex items-center justify-center text-[#111] transition-colors duration-400 group-hover:text-white mb-8">
+                    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 301.46 331.65" fill="none" stroke="currentColor" stroke-width="0.5">
+                      <path fill="currentColor" d="M254.75,185.15A2,2,0,0,1,254,185L105.3,125.44a2.06,2.06,0,0,1,0-3.83L254,62.05a2,2,0,0,1,1.53,0l148.64,59.56a2.06,2.06,0,0,1,0,3.83L255.52,185A2.07,2.07,0,0,1,254.75,185.15ZM111.62,123.52l143.13,57.34,143.09-57.34L254.75,66.19Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M254.75,270.76a2,2,0,0,1-.76-.14L105.3,211.06a2.07,2.07,0,0,1,1.53-3.84l147.92,59.25,147.88-59.25a2.07,2.07,0,0,1,1.53,3.84L255.52,270.62A2.06,2.06,0,0,1,254.75,270.76Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M254.75,307.94a2,2,0,0,1-.76-.15L105.3,248.23a2.06,2.06,0,0,1,0-3.83l46.38-18.59a2.07,2.07,0,0,1,1.53,3.84l-41.59,16.66,143.13,57.34,143.09-57.34-41.59-16.66a2.07,2.07,0,0,1,1.53-3.84l46.38,18.59a2.06,2.06,0,0,1,0,3.83L255.52,307.79A2.07,2.07,0,0,1,254.75,307.94Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M254.75,393.55a2.13,2.13,0,0,1-.85-.18l-148.68-67A2.06,2.06,0,0,1,104,324.5V246.31a2.07,2.07,0,0,1,4.13,0v76.85L252.69,388.3V305.87a2.07,2.07,0,0,1,4.13,0v85.62a2.07,2.07,0,0,1-2.07,2.06Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M254.75,270.76a2.06,2.06,0,0,1-2.06-2.06V183.08a2.07,2.07,0,0,1,4.13,0V268.7A2.07,2.07,0,0,1,254.75,270.76Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M106.07,211.21a2.07,2.07,0,0,1-2.07-2.07V123.52a2.07,2.07,0,0,1,4.13,0v85.62A2.07,2.07,0,0,1,106.07,211.21Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M254.75,393.55a2.06,2.06,0,0,1-.85-3.94l147.43-66.45V246.31a2.07,2.07,0,0,1,4.13,0V324.5a2.06,2.06,0,0,1-1.22,1.88l-148.64,67A2,2,0,0,1,254.75,393.55Z" transform="translate(-104 -61.9)"></path>
+                      <path fill="currentColor" d="M403.39,211.21a2.07,2.07,0,0,1-2.06-2.07V123.52a2.07,2.07,0,0,1,4.13,0v85.62A2.07,2.07,0,0,1,403.39,211.21Z" transform="translate(-104 -61.9)"></path>
+                    </svg>
+                  </div>
+                  <h3 class="font-primary font-bold text-[22px] sm:text-[24px] lg:text-[26px] leading-[32px] text-[#111] transition-colors duration-400 group-hover:text-white mb-4">
+                    Discovery
+                  </h3>
+                  <p class="text-[14px] sm:text-[15px] leading-[24px] sm:leading-[26px] font-secondary text-[#666] transition-colors duration-400 group-hover:text-[#c2c2c2] max-w-[280px]">
+                    We understand your vision, requirements, and budget to build a strong foundation for your project.
+                  </p>
+                </div>
+              </div>
+
+              <!-- ===== Process Card 2 ===== -->
+              <div class="process-card group relative overflow-hidden bg-white border border-[#11111126] cursor-pointer transition-colors duration-400 ease-out hover:bg-[#111]">
+                <div class="flex flex-col items-center text-center px-8 sm:px-10 py-14 sm:py-16">
+                  <div class="size-[70px] sm:size-[80px] flex items-center justify-center text-[#111] transition-colors duration-400 group-hover:text-white mb-8">
+                    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 328.1 360.96" fill="currentColor">
+                      <path d="M246.76,213.14a2.12,2.12,0,0,1-.83-.16L84.1,148.16a2.26,2.26,0,0,1-1.41-2.09A2.24,2.24,0,0,1,84.1,144l40.5-16.23a2.25,2.25,0,1,1,1.67,4.17L91,146.07l155.78,62.4,39.66-15.89a2.25,2.25,0,0,1,1.67,4.17L247.59,213A2.15,2.15,0,0,1,246.76,213.14Z" transform="translate(-82.69 -79)"></path>
+                      <path d="M368,164.54a2.25,2.25,0,0,1-.83-4.33l35.29-14.14L246.76,83.67,207.22,99.49a2.26,2.26,0,0,1-2.6-.52,2.21,2.21,0,0,1,.13-3.16,2.46,2.46,0,0,1,.72-.46l40.46-16.19a2.27,2.27,0,0,1,1.66,0L409.37,144a2.24,2.24,0,0,1,1.41,2.08,2.26,2.26,0,0,1-1.41,2.09l-40.5,16.22A2.28,2.28,0,0,1,368,164.54Z" transform="translate(-82.69 -79)"></path>
+                      <path d="M246.74,440a2.28,2.28,0,0,1-.92-.2L84,366.85a2.26,2.26,0,0,1-1.33-2.05V146.06A2.26,2.26,0,0,1,85.78,144l161.8,64.81a2.26,2.26,0,0,1,1.41,2.09V437.71a2.27,2.27,0,0,1-1,1.89A2.31,2.31,0,0,1,246.74,440ZM87.19,363.34l157.3,70.89V212.39l-157.3-63Z" transform="translate(-82.69 -79)"></path>
+                      <path d="M287.26,421.7a2.24,2.24,0,0,1-2.24-2.24V195.73L124.61,131.92a2.24,2.24,0,0,1,1.66-4.16l161.82,64.37a2.25,2.25,0,0,1,1.41,2.08V419.46A2.24,2.24,0,0,1,287.26,421.7Z" transform="translate(-82.69 -79)"></path>
+                      <path d="M368.12,385.18a2.13,2.13,0,0,1-.89-.19L286.36,349.3a2.22,2.22,0,0,1,1.8-4.06l77.74,34.31V162.42L208.57,100.7V162a2.23,2.23,0,0,1-4.45,0V97.43a2.24,2.24,0,0,1,3-2.07l161.78,63.47a2.24,2.24,0,0,1,1.41,2.07V383a2.22,2.22,0,0,1-2.23,2.22Z" transform="translate(-82.69 -79)"></path>
+                      <path d="M368.16,385.24a2.24,2.24,0,0,1-.93-4.29l39.06-17.61V146.06a2.25,2.25,0,0,1,4.5,0V364.8a2.26,2.26,0,0,1-1.33,2.05l-40.38,18.2A2.3,2.3,0,0,1,368.16,385.24Z" transform="translate(-82.69 -79)"></path>
+                      <path d="M246.74,440a2.25,2.25,0,0,1-.92-4.3l40.5-18.25a2.25,2.25,0,0,1,1.85,4.1l-40.51,18.25A2.15,2.15,0,0,1,246.74,440Z" transform="translate(-82.69 -79)"></path>
+                    </svg>
+                  </div>
+                  <h3 class="font-primary font-bold text-[22px] sm:text-[24px] lg:text-[26px] leading-[32px] text-[#111] transition-colors duration-400 group-hover:text-white mb-4">
+                    Design & Planning
+                  </h3>
+                  <p class="text-[14px] sm:text-[15px] leading-[24px] sm:leading-[26px] font-secondary text-[#666] transition-colors duration-400 group-hover:text-[#c2c2c2] max-w-[280px]">
+                    We develop thoughtful designs, detailed drawings, and practical solutions tailored to your space.
+                  </p>
+                </div>
+              </div>
+
+              <!-- ===== Process Card 3 ===== -->
+              <div class="process-card group relative overflow-hidden bg-white border border-[#11111126] cursor-pointer transition-colors duration-400 ease-out hover:bg-[#111]">
+                <div class="flex flex-col items-center text-center px-8 sm:px-10 py-14 sm:py-16">
+                  <div class="size-[70px] sm:size-[80px] flex items-center justify-center text-[#111] transition-colors duration-400 group-hover:text-white mb-8">
+                    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320.18 352.25" fill="currentColor">
+                      <path d="M249.91,197.19a2.1,2.1,0,0,1-.82-.16L91.19,133.79a2.2,2.2,0,0,1,0-4.07l157.9-63.25a2.19,2.19,0,0,1,1.63,0l157.9,63.25a2.19,2.19,0,0,1,0,4.07L250.72,197A2.09,2.09,0,0,1,249.91,197.19Zm-152-65.44,152,60.88,152-60.88-152-60.88Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M249.89,260.42a2.1,2.1,0,0,1-.82-.16L91.2,197.05A2.19,2.19,0,0,1,92.83,193l157.06,62.88L407,193a2.19,2.19,0,1,1,1.63,4.07L250.71,260.26A2.14,2.14,0,0,1,249.89,260.42Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M249.89,299.29a2.3,2.3,0,0,1-.82-.16l-39.39-15.79a2.19,2.19,0,1,1,1.63-4.07l38.58,15.46,152-60.89L367.38,220a2.19,2.19,0,0,1,1.63-4.07l39.61,15.88a2.19,2.19,0,0,1,0,4.07L250.71,299.13A2.34,2.34,0,0,1,249.89,299.29Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M131.63,251.91a2.14,2.14,0,0,1-.82-.16L91.2,235.87a2.19,2.19,0,0,1,0-4.07l48.47-19.43a2.19,2.19,0,1,1,1.63,4.07l-43.39,17.4,34.53,13.84a2.19,2.19,0,0,1-.81,4.23Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M249.89,418.56a2.34,2.34,0,0,1-.9-.19L91.11,347.21a2.2,2.2,0,0,1-1.29-2V233.84a2.2,2.2,0,0,1,4.39,0v110L247.7,413V297.09a2.19,2.19,0,0,1,4.38,0V416.37a2.18,2.18,0,0,1-1,1.84A2.23,2.23,0,0,1,249.89,418.56Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M249.89,260.42a2.19,2.19,0,0,1-2.19-2.19V195a2.19,2.19,0,0,1,4.38,0v63.21A2.19,2.19,0,0,1,249.89,260.42Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M92,197.21a2.19,2.19,0,0,1-2.2-2.19V131.76a2.2,2.2,0,0,1,4.39,0V195A2.19,2.19,0,0,1,92,197.21Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M249.89,418.56a2.19,2.19,0,0,1-.9-4.19l156.62-70.58v-110a2.2,2.2,0,0,1,4.39,0V345.21a2.2,2.2,0,0,1-1.29,2L250.79,418.37A2.21,2.21,0,0,1,249.89,418.56Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M407.81,197.21a2.19,2.19,0,0,1-2.2-2.19V131.76a2.2,2.2,0,0,1,4.39,0V195A2.19,2.19,0,0,1,407.81,197.21Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M210.48,346.53a2.09,2.09,0,0,1-.81-.16l-78.85-31.54a2.19,2.19,0,0,1-1.38-2V249.71a2.18,2.18,0,0,1,1.37-2l47.82-19.31a2.19,2.19,0,0,1,1.64,4.07l-46.44,18.75v60.12l74.46,29.79V281.26a2.19,2.19,0,0,1,1.38-2l157.69-63.3A2.19,2.19,0,1,1,369,220L212.68,282.74v61.6a2.21,2.21,0,0,1-2.2,2.19Z" transform="translate(-89.82 -66.31)"></path>
+                      <path d="M131.63,315a2.19,2.19,0,0,1-.7-4.27L209.8,284.4a2.19,2.19,0,1,1,1.39,4.16l-78.87,26.32A2.07,2.07,0,0,1,131.63,315Z" transform="translate(-89.82 -66.31)"></path>
+                    </svg>
+                  </div>
+                  <h3 class="font-primary font-bold text-[22px] sm:text-[24px] lg:text-[26px] leading-[32px] text-[#111] transition-colors duration-400 group-hover:text-white mb-4">
+                   Execution & Handover
+                  </h3>
+                  <p class="text-[14px] sm:text-[15px] leading-[24px] sm:leading-[26px] font-secondary text-[#666] transition-colors duration-400 group-hover:text-[#c2c2c2] max-w-[280px]">
+                   We manage every stage of execution with precision, ensuring quality, timely completion, and a seamless handover.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>

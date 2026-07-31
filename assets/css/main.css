@@ -1,0 +1,159 @@
+
+
+
+
+
+
+
+*{
+  /* border:1px solid red; */
+}
+body {
+  background-color: #f3eeea;
+  font-family: var(--font-secondary);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.max-w-8xl {
+  width: 100%;
+  max-width: 1320px;
+}
+
+
+
+.menu-items {
+  flex-shrink: 0;
+}
+
+.menu-items > li {
+  padding: 10px 16px;
+  border-radius: 26px;
+  border: 1px solid #d9cfc7;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
+
+
+.parallax-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.parallax-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.25);
+  will-change: transform;
+}
+
+
+.why-choose-us-top {
+  background: url(https://demo.casethemes.net/maiko/wp-content/uploads/2024/10/home1-01.webp) no-repeat center;
+  height: 413px;
+  background-size: cover;
+  will-change: background-position;
+}
+
+.parallax-banner {
+  background: url(https://demo.casethemes.net/maiko/wp-content/uploads/2024/10/home1-02.webp) no-repeat center;
+  background-size: cover;
+  height: 254px;
+  will-change: background-position;
+}
+
+
+.services-swiper {
+  overflow: visible !important;
+}
+
+
+.swiper-slide-active .service-card {
+  transform: translateY(-37px);
+  transition: transform 0.5s ease-out;
+}
+
+
+.services-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #111;
+  opacity: 0.25;
+  border-radius: 9999px;
+  transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.services-pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+  width: 22px;
+  border-radius: 9999px;
+}
+
+
+
+.stats-balls {
+  z-index: 1;
+  transition: all 0.6s ease;
+}
+
+.stats-balls.active {
+  z-index: 2;
+  left: 89px;
+  transform: rotate(360deg);
+}
+
+.stats-balls:not(.active) {
+  z-index: 1;
+  left: 0;
+  transform: rotate(0deg);
+}
+
+
+
+.testi-arrow-stroke {
+  fill: none;
+  stroke: #000;
+  stroke-miterlimit: 10;
+  stroke-width: 2px;
+}
+
+
+
+@media (max-width: 576px) {
+  .why-choose-us-top {
+    height: 600px;
+  }
+
+  .swiper-slide-active .service-card {
+    transform: none;
+  }
+}
+
+.work-tab::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0%;
+    background-color: theme('colors.cream', #f2f0e9);
+    transition: width 0.35s ease;
+  }
+
+  .work-tab:hover::after {
+    width: 100%;
+  }
+
+  .work-tab.active::after {
+    width: 100%;
+  }
