@@ -174,27 +174,123 @@ document.addEventListener("DOMContentLoaded", () => {
 /***************************************************
  * 06. Works / Projects Slider (Swiper)
  ***************************************************/
-const worksSwiper = new Swiper(".works-swiper", {
-  slidesPerView: 1.15,
-  spaceBetween: 20,
-  speed: 900,
+(function () {
+  const worksV2Swiper = new Swiper('.works-v2-swiper', {
+  centeredSlides: true,
+  loop: false,
+  slidesPerView: 1,          // ✅ mobile: full-width, no bleed
+  spaceBetween: 16,
+  speed: 650,
   grabCursor: true,
-  autoplay: {
-    delay: 2800,
-    disableOnInteraction: false,
-    pauseOnMouseEnter: true,
+  watchSlidesProgress: true,
+
+  autoplay: {                 // ✅ auto-slide every few seconds
+    delay: 3500,
+    disableOnInteraction: false, // manual swipe ke baad bhi autoplay chalta rahega
+    pauseOnMouseEnter: true,     // hover pe pause — desktop pe nice touch
   },
-  navigation: {
-    nextEl: ".works-next",
-    prevEl: ".works-prev",
-  },
+
   breakpoints: {
-    640: { slidesPerView: 1.6, spaceBetween: 20 },
-    1024: { slidesPerView: 2.1, spaceBetween: 20 },
-    1440: { slidesPerView: 2.4, spaceBetween: 24 },
+    640:  { slidesPerView: 1.4,  spaceBetween: 24 }, // peek effect yahan se start
+    1024: { slidesPerView: 1.8,  spaceBetween: 32 },
+    1280: { slidesPerView: 2.2,  spaceBetween: 40 },
+  },
+
+  navigation: {
+    nextEl: '.works-v2-next',
+    prevEl: '.works-v2-prev',
+  },
+
+  on: {
+    init: syncActiveSlide,
+    slideChange: syncActiveSlide,
+    setTransition: applyDepthStyles,
+    progress: applyDepthStyles,
   },
 });
 
+  function applyDepthStyles(swiper) {
+    swiper.slides.forEach((slideEl) => {
+      const progress = slideEl.progress;
+      const distance = Math.min(Math.abs(progress), 2);
+      const scale = 1 - distance * 0.12;
+      const opacity = 1 - distance * 0.35;
+      slideEl.style.transform = `scale(${Math.max(scale, 0.72)})`;
+      slideEl.style.opacity = Math.max(opacity, 0.25);
+    });
+  }
+
+  function syncActiveSlide(swiper) {
+    const activeSlide = swiper.slides[swiper.activeIndex];
+    if (!activeSlide) return;
+
+    const title = activeSlide.dataset.title || '';
+    const desc  = activeSlide.dataset.desc  || '';
+    const tags  = (activeSlide.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+
+    const titleEl = document.getElementById('worksV2Title');
+    const descEl  = document.getElementById('worksV2Desc');
+    const tagsEl  = document.getElementById('worksV2Tags');
+
+    [titleEl, descEl].forEach(el => el.style.opacity = 0);
+
+    setTimeout(() => {
+      titleEl.textContent = title;
+      descEl.textContent  = desc;
+      tagsEl.innerHTML = tags.map(tag =>
+        `<span class="text-[13px] font-secondary text-[#666] border border-[#11111126] rounded-full px-4 py-1.5">${tag}</span>`
+      ).join('');
+      titleEl.style.opacity = 1;
+      descEl.style.opacity  = 1;
+    }, 180);
+  }
+
+  // ✅ hide arrows automatically when the filtered set can't actually scroll
+  function toggleNavVisibility(swiper) {
+    const prevBtn = document.querySelector('.works-v2-prev');
+    const nextBtn = document.querySelector('.works-v2-next');
+    const canScroll = !(swiper.isBeginning && swiper.isEnd);
+    prevBtn.style.display = canScroll ? '' : 'none';
+    nextBtn.style.display = canScroll ? '' : 'none';
+  }
+
+  const tabs = document.querySelectorAll('.work-v2-tab');
+  const allItems = document.querySelectorAll('.work-v2-item');
+
+  function updateCounts() {
+    tabs.forEach(tab => {
+      const filter = tab.dataset.filter;
+      const count = filter === 'all'
+        ? allItems.length
+        : Array.from(allItems).filter(el => el.dataset.category.split(' ').includes(filter)).length;
+      tab.querySelector('sup').textContent = count;
+    });
+  }
+
+  function applyFilter(filter) {
+    allItems.forEach(el => {
+      const match = filter === 'all' || el.dataset.category.split(' ').includes(filter);
+      el.style.display = match ? '' : 'none';
+    });
+    worksV2Swiper.update();
+    worksV2Swiper.slideTo(0, 0);   // no more slideToLoop, loop is off
+    syncActiveSlide(worksV2Swiper);
+    toggleNavVisibility(worksV2Swiper);
+  }
+
+ tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active', 'border-black', 'text-[#111]'));
+    tabs.forEach(t => t.classList.add('border-transparent'));
+    tab.classList.remove('border-transparent');
+    tab.classList.add('active', 'border-black', 'text-[#111]');
+    applyFilter(tab.dataset.filter);
+  });
+});
+
+  updateCounts();
+  toggleNavVisibility(worksV2Swiper);
+})();
 
 /***************************************************
  * 07. Testimonials Slider (Swiper)
