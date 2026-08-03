@@ -15,7 +15,7 @@
   <meta property="og:title" content="Speight Designs | Architecture, Interior Design &amp; PMC Firm in Mumbai" />
   <meta property="og:description" content="Multidisciplinary architecture, interior design, and project management consultancy firm crafting exquisite, timeless spaces in Mumbai since 1998." />
   <meta property="og:url" content="https://www.speightdesigns.com/" />
-  <meta property="og:image" content="https://demo.casethemes.net/maiko/wp-content/uploads/2024/10/home1-bg-01.webp" />
+  
   <meta property="og:locale" content="en_IN" />
 
   <!-- Twitter Card -->
@@ -77,7 +77,7 @@
 
   <!-- ==================== TAILWIND (JS-based) ==================== -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="https://cdn.pannellum.org/2.5/pannellum.css">
+  <!-- <link rel="stylesheet" href="https://cdn.pannellum.org/2.5/pannellum.css"> -->
 
   <!-- ==================== JS LIBRARY CDN LINKS ==================== -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
@@ -166,39 +166,75 @@
       </div>
     </div>
 
-    <!--  Mobile Sidebar Drawer  -->
-    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-[999] opacity-0 invisible transition-opacity duration-400 lg:hidden"></div>
-    <div id="mobile-sidebar" class="fixed top-0 -translate-x-full px-[35px] py-[40px] left-0 h-full w-full  bg-black z-[9999] -translate-x-full  transition-transform duration-500 ease-out lg:hidden overflow-y-auto">
+  <!--  Mobile Sidebar Drawer  -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-[999] opacity-0 invisible transition-opacity duration-400 lg:hidden"></div>
+<div id="mobile-sidebar" class="fixed top-0 -translate-x-full px-[35px] py-[30px] left-0 h-[100svh] w-full bg-black z-[9999] -translate-x-full transition-transform duration-500 ease-out lg:hidden overflow-y-auto flex flex-col">
 
-      <button id="sidebar-close" type="button" aria-label="Close menu"
-        class="absolute top-0 right-0 w-11 h-11 flex items-center justify-center bg-[#1a1a1a] text-white">
-        <i class="ri-close-line text-[22px]"></i>
-      </button>
+  <button id="sidebar-close" type="button" aria-label="Close menu"
+    class="absolute top-0 right-0 w-11 h-11 flex items-center justify-center bg-[#1a1a1a] text-white">
+    <i class="ri-close-line text-[22px]"></i>
+  </button>
 
-      <div class="flex items-center ">
-        <img src="/assets/img/logo/logo-white.png" alt="Speight Design" class="w-24 ml-[-20px]" decoding="async" />
-      </div>
-
-      <nav class=" mt-[35px]">
-        <ul class="font-primary text-[15px] font-primary font-normal text-white">
-          <li class="border-b py-[10px] border-[#ffffff0f]">
-            <a href="#home"><span>Home</span></a>
-          </li>
-          <li class="border-b py-[10px] border-[#ffffff0f]">
-            <a href="#studio"><span>The Studio</span></a>
-          </li>
-          <li class="border-b py-[10px] border-[#ffffff0f]">
-            <a href="#services"><span>Services</span></a>
-          </li>
-          <li class="border-b py-[10px] border-[#ffffff0f]">
-            <a href="#works"><span>Works</span></a>
-          </li>
-          <li class="border-b py-[10px] border-[#ffffff0f]">
-            <a href="#contact"><span>Contact Us</span></a>
-          </li>
-        </ul>
-      </nav>
+  <!-- Logo + Tagline -->
+  <div>
+    <div class="flex items-center">
+      <img src="/assets/img/logo/logo-white.png" alt="Speight Design" class="w-24 ml-[-20px]" decoding="async" />
     </div>
+   
+  </div>
+
+  <!-- Nav Links -->
+  <nav class="mt-[35px]">
+    <ul class="font-primary text-[15px] font-normal text-white">
+      <li class="border-b py-[10px] border-[#ffffff0f]">
+        <a href="#home" class="flex items-center justify-between group">
+          <span>Home</span>
+          <i class="ri-arrow-right-up-line text-[16px] text-[#8a8a8a] group-hover:text-white transition-colors"></i>
+        </a>
+      </li>
+      <li class="border-b py-[10px] border-[#ffffff0f]">
+        <a href="#studio" class="flex items-center justify-between group">
+          <span>The Studio</span>
+          <i class="ri-arrow-right-up-line text-[16px] text-[#8a8a8a] group-hover:text-white transition-colors"></i>
+        </a>
+      </li>
+      <li class="border-b py-[10px] border-[#ffffff0f]">
+        <a href="#services" class="flex items-center justify-between group">
+          <span>Services</span>
+          <i class="ri-arrow-right-up-line text-[16px] text-[#8a8a8a] group-hover:text-white transition-colors"></i>
+        </a>
+      </li>
+      <li class="border-b py-[10px] border-[#ffffff0f]">
+        <a href="#works" class="flex items-center justify-between group">
+          <span>Works</span>
+          <i class="ri-arrow-right-up-line text-[16px] text-[#8a8a8a] group-hover:text-white transition-colors"></i>
+        </a>
+      </li>
+      <li class="border-b py-[10px] border-[#ffffff0f]">
+        <a href="#contact" class="flex items-center justify-between group">
+          <span>Contact</span>
+          <i class="ri-arrow-right-up-line text-[16px] text-[#8a8a8a] group-hover:text-white transition-colors"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Spacer pushes footer block to the bottom -->
+  <div class="flex-1"></div>
+
+  <!-- Email + Socials -->
+  <div class="pt-[16px] border-t border-[#ffffff0f]">
+    <p class="text-[13px] font-secondary text-[#8a8a8a] mb-3">
+      <a href="mailto:hello@speightdesigns.com" class="hover:text-white transition-colors">hello@speightdesigns.com</a>
+    </p>
+    <div class="flex items-center gap-3 text-[13px] font-secondary text-[#8a8a8a]">
+      <a href="https://www.instagram.com/speightdesigns/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Instagram</a>
+      <span class="text-[#444]">•</span>
+      <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
+    </div>
+  </div>
+
+</div>
 
     <!--  Header  -->
     <header class=" ">
@@ -238,7 +274,7 @@
 <!-- Fixed Contact Bar: Call + WhatsApp -->
 <div class="fixed bottom-0 left-0 right-0 z-[999] h-[8svh] md:h-auto flex md:bottom-6 md:right-6 md:left-auto md:flex-col-reverse gap-0 sm:gap-2 p-0 bg-transparent backdrop-blur-sm md:backdrop-blur-none">
 
-  <!-- Call Button -->
+  
   <a href="tel:+919833996371"
     class="flex-1 md:flex-none inline-flex items-center justify-center bg-black text-white md:w-12 md:h-12 md:rounded-full active:scale-[0.97] transition-transform duration-200 shadow-lg"
     aria-label="Call Speight Designs">
@@ -246,7 +282,7 @@
     <span class="ml-2 text-sm font-semibold md:hidden">Call Now</span>
   </a>
 
-  <!-- WhatsApp Button -->
+  
   <a href="https://wa.me/+919833996371?text=Hi,%20I%20need%20architecture%20consulting" target="_blank" rel="noopener noreferrer"
     class="flex-1 md:flex-none inline-flex items-center justify-center bg-[#25D366] text-white md:w-12 md:h-12 md:rounded-full active:scale-[0.97] transition-transform duration-200 shadow-lg"
     aria-label="Chat on WhatsApp">
