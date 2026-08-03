@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
  * 02. Mobile Sidebar Drawer (Hamburger Menu Toggle)
  ***************************************************/
 document.addEventListener("DOMContentLoaded", () => {
-  const menuToggle = document.querySelector(".hamburger-menu");
+  const menuToggles = document.querySelectorAll(".hamburger-menu, .hamburger-menu-sticky");
   const sidebar = document.getElementById("mobile-sidebar");
   const overlay = document.getElementById("mobile-sidebar-overlay");
   const sidebarClose = document.getElementById("sidebar-close");
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("overflow-hidden");
   }
 
-  menuToggle.addEventListener("click", openSidebar);
+  menuToggles.forEach((toggle) => toggle.addEventListener("click", openSidebar));
   sidebarClose.addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
   sidebarLinks.forEach((link) => link.addEventListener("click", closeSidebar));
@@ -262,7 +262,7 @@ const lenis = new Lenis({
   autoRaf: true,
 });
 
-lenis.on("scroll", ScrollTrigger.update);
+// lenis.on("scroll", ScrollTrigger.update);
 
 
 /***************************************************

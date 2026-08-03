@@ -167,8 +167,8 @@
     </div>
 
     <!--  Mobile Sidebar Drawer  -->
-    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-[998] opacity-0 invisible transition-opacity duration-400 lg:hidden"></div>
-    <div id="mobile-sidebar" class="fixed top-0 -translate-x-full px-[35px] py-[40px] left-0 h-full w-full  bg-black z-[999] -translate-x-full  transition-transform duration-500 ease-out lg:hidden overflow-y-auto">
+    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-[999] opacity-0 invisible transition-opacity duration-400 lg:hidden"></div>
+    <div id="mobile-sidebar" class="fixed top-0 -translate-x-full px-[35px] py-[40px] left-0 h-full w-full  bg-black z-[9999] -translate-x-full  transition-transform duration-500 ease-out lg:hidden overflow-y-auto">
 
       <button id="sidebar-close" type="button" aria-label="Close menu"
         class="absolute top-0 right-0 w-11 h-11 flex items-center justify-center bg-[#1a1a1a] text-white">
@@ -231,7 +231,79 @@
         </button>
       </nav>
 
-      <div class="bar h-[65px]  hidden lg:block bg-[#DDD1C4] ">
+     
+    </header>
+
+    
+<!-- Fixed Contact Bar: Call + WhatsApp -->
+<div class="fixed bottom-0 left-0 right-0 z-[999] h-[8svh] md:h-auto flex md:bottom-6 md:right-6 md:left-auto md:flex-col-reverse gap-0 sm:gap-2 p-0 bg-transparent backdrop-blur-sm md:backdrop-blur-none">
+
+  <!-- Call Button -->
+  <a href="tel:+919833996371"
+    class="flex-1 md:flex-none inline-flex items-center justify-center bg-black text-white md:w-12 md:h-12 md:rounded-full active:scale-[0.97] transition-transform duration-200 shadow-lg"
+    aria-label="Call Speight Designs">
+    <i class="ri-phone-line text-xl"></i>
+    <span class="ml-2 text-sm font-semibold md:hidden">Call Now</span>
+  </a>
+
+  <!-- WhatsApp Button -->
+  <a href="https://wa.me/+919833996371?text=Hi,%20I%20need%20architecture%20consulting" target="_blank" rel="noopener noreferrer"
+    class="flex-1 md:flex-none inline-flex items-center justify-center bg-[#25D366] text-white md:w-12 md:h-12 md:rounded-full active:scale-[0.97] transition-transform duration-200 shadow-lg"
+    aria-label="Chat on WhatsApp">
+    <i class="ri-whatsapp-line text-xl"></i>
+    <span class="ml-2 text-sm font-semibold md:hidden">WhatsApp</span>
+  </a>
+
+</div>
+
+<script>
+  (function () {
+    const qrWrapper = document.getElementById('qrWrapper');
+    const qrBtn = qrWrapper.querySelector('.qr-btn');
+    const qrPopup = qrWrapper.querySelector('.qr-popup');
+
+    qrBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      qrPopup.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!qrWrapper.contains(e.target)) {
+        qrPopup.classList.add('hidden');
+      }
+    });
+  })();
+</script>
+
+    <!--  Header (sticky clone — always white, only this one slides on scroll) -->
+<header id="siteHeaderSticky" class="fixed top-0 left-0 w-full z-[999] bg-white shadow-sm transition-transform duration-300 ease-out -translate-y-full">
+  <nav class="lg:hidden px-4 py-4 flex justify-between items-center" aria-label="Mobile navigation (sticky)">
+    <img class="w-18" src="/assets/img/logo-new/logo-dark.png" alt="Speight Designs logo" width="72" height="32" loading="lazy" decoding="async" />
+    <button type="button" class="hamburger-menu-sticky space-y-1.5" aria-label="Open menu">
+      <div class="humburger-line w-6.5 rounded-[3px] h-[2px] bg-black"></div>
+      <div class="humburger-line w-6.5 ml-1 rounded-[3px] h-[2px] bg-black"></div>
+      <div class="humburger-line w-6.5 rounded-[3px] h-[2px] bg-black"></div>
+    </button>
+  </nav>
+
+  <nav class="hidden max-w-8xl mx-auto px-[15px] sm:px-[35px] lg:px-3.75 lg:flex py-4 justify-between items-center" aria-label="Primary navigation (sticky)">
+    <img class="w-18 lg:w-20" src="/assets/img/logo-new/logo-dark.png" alt="Speight Designs logo" width="80" height="36" loading="lazy" decoding="async" />
+    <ul class="menu-items hidden lg:flex gap-1.25 text-csm font-primary leading-none">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#studio">The Studio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#works">Works</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+    <button id="menu-toggle-sticky" type="button" class="lg:hidden flex flex-col justify-center items-center gap-1.5 w-10 h-10" aria-label="Toggle menu" aria-expanded="false">
+      <span class="menu-bar block w-6 h-px bg-black transition-transform duration-300"></span>
+      <span class="menu-bar block w-6 h-px bg-black transition-opacity duration-300"></span>
+      <span class="menu-bar block w-6 h-px bg-black transition-transform duration-300"></span>
+    </button>
+  </nav>
+</header>
+
+     <div class="bar h-[65px]  hidden lg:block bg-[#DDD1C4] ">
        <div class="px-[15px]   h-full relative sm:px-[35px]">
 
       
@@ -268,7 +340,6 @@
        </div>
        </div>
       </div>
-    </header>
 
     <div class="main-content">
 
@@ -1033,6 +1104,306 @@
         </div>
       </section>
 
+
+
+
+      <section id="works-v2" class="works-frame-v2 bg-white overflow-hidden">
+  <div class="py-[80px] sm:py-[110px] lg:py-[135px]">
+    <div class="px-[15px] sm:px-[35px] max-w-8xl mx-auto">
+
+      <!-- Heading row -->
+      <div class="flex items-start justify-between gap-6 mb-8 sm:mb-10">
+        <h2 class="text-[52px] sm:text-[75px] md:text-[95px] lg:text-[113px] font-primary leading-[1] font-medium text-[#111]">
+          Projects
+        </h2>
+        <a href="#contact" aria-label="Get in touch about a project"
+           class="shrink-0 mt-3 sm:mt-6 lg:mt-10 size-12 sm:size-14 rounded-full border border-[#11111126] flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-colors duration-300">
+          <i class="ri-arrow-right-up-line text-[20px] sm:text-[22px]"></i>
+        </a>
+      </div>
+
+      <!-- Two-column intro copy -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 mb-10 lg:mb-14">
+        <p class="text-[15px] leading-[26px] text-[#666]">
+          Projects featured by Speight Designs below. Every space we've shaped grows out of the same instinct that the best ideas move between disciplines.
+        </p>
+        <p class="text-[15px] leading-[26px] text-[#666]">
+          A home is more than a physical space it's a reflection of the way you live. Browse a few of the projects we've delivered across Mumbai.
+        </p>
+      </div>
+
+      <div class="w-full h-px bg-[#11111126] mb-10 lg:mb-14"></div>
+
+      <div class="works-v2-tabs-wrap border border-[#11111126] rounded-[2px] px-6 sm:px-8 py-5 mb-14 lg:mb-20">
+  <ul id="worksV2Tabs" class="flex flex-wrap justify-center sm:justify-between gap-x-8 gap-y-4 font-primary font-medium text-[15px] tracking-[0.5px]">
+    <li>
+      <button data-filter="all" class="work-v2-tab active flex items-baseline gap-2 uppercase whitespace-nowrap pb-2 border-b-2 border-transparent transition-colors duration-300">
+        <span>All Projects</span><sup class="text-[11px] font-secondary normal-case text-[#999]"></sup>
+      </button>
+    </li>
+    <li>
+      <button data-filter="architecture" class="work-v2-tab flex items-baseline gap-2 uppercase whitespace-nowrap pb-2 border-b-2 border-transparent transition-colors duration-300">
+        <span>Architecture</span><sup class="text-[11px] font-secondary normal-case text-[#999]"></sup>
+      </button>
+    </li>
+    <li>
+      <button data-filter="interior" class="work-v2-tab flex items-baseline gap-2 uppercase whitespace-nowrap pb-2 border-b-2 border-transparent transition-colors duration-300">
+        <span>Interior</span><sup class="text-[11px] font-secondary normal-case text-[#999]"></sup>
+      </button>
+    </li>
+    <li>
+      <button data-filter="residence" class="work-v2-tab flex items-baseline gap-2 uppercase whitespace-nowrap pb-2 border-b-2 border-transparent transition-colors duration-300">
+        <span>Residence</span><sup class="text-[11px] font-secondary normal-case text-[#999]"></sup>
+      </button>
+    </li>
+    <li>
+      <button data-filter="civil" class="work-v2-tab flex items-baseline gap-2 uppercase whitespace-nowrap pb-2 border-b-2 border-transparent transition-colors duration-300">
+        <span>Civil</span><sup class="text-[11px] font-secondary normal-case text-[#999]"></sup>
+      </button>
+    </li>
+  </ul>
+</div>
+
+    <!-- Centered slide swiper -->
+      <div class="works-v2-swiper-wrap relative">
+        <div class="swiper works-v2-swiper overflow-visible">
+          <div class="swiper-wrapper items-center">
+
+            <div class="swiper-slide work-v2-item" data-category="architecture design"
+                 data-title="Onda Concrete Study"
+                 data-tags="Architecture, Design"
+                 data-desc="A raw-concrete residence built around a single sculptural courtyard wall, letting light fall differently through every room across the day.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=1000&q=80" alt="Onda Concrete Study">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="architecture building"
+                 data-title="Vasto Stair Pavilion"
+                 data-tags="Architecture, Building"
+                 data-desc="A folded-concrete stair pavilion designed as the connective spine of a hillside villa, treating circulation as its own destination.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1000&q=80" alt="Vasto Stair Pavilion">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="building civil"
+                 data-title="Marea Office Tower"
+                 data-tags="Building, Civil"
+                 data-desc="A glazed commercial tower planned around passive ventilation, cutting mechanical cooling load without touching the floor plate efficiency.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&q=80" alt="Marea Office Tower">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="interior design"
+                 data-title="Grigio Bath Suite"
+                 data-tags="Interior, Design"
+                 data-desc="A monochrome bath suite in fluted stone and blackened brass, built to feel like a single carved volume rather than a fitted room.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1000&q=80" alt="Grigio Bath Suite">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="civil residence"
+                 data-title="Vasto Sculpture Court"
+                 data-tags="Civil, Residence"
+                 data-desc="A private sculpture court cut into a residential plot, using landscape grading instead of walls to hold the space.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1000&q=80" alt="Vasto Sculpture Court">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="architecture design"
+                 data-title="Sable Wood Facade"
+                 data-tags="Architecture, Design"
+                 data-desc="A timber-slat rain-screen facade specified for a coastal site, chosen for how it silvers and softens with age rather than in spite of it.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80" alt="Sable Wood Facade">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="interior residence"
+                 data-title="Linea Kitchen Loft"
+                 data-tags="Interior, Residence"
+                 data-desc="An open kitchen-living loft where the island doubles as the only visible storage, keeping every other surface deliberately bare.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1000&q=80" alt="Linea Kitchen Loft">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="interior"
+                 data-title="Noir Kitchen Studio"
+                 data-tags="Interior"
+                 data-desc="A compact studio kitchen in matte black cabinetry, planned to disappear against the walls when the doors are closed.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&q=80" alt="Noir Kitchen Studio">
+              </div>
+            </div>
+
+            <div class="swiper-slide work-v2-item" data-category="architecture building"
+                 data-title="Onda Twin Towers"
+                 data-tags="Architecture, Building"
+                 data-desc="A pair of curved-glass residential towers sharing one podium, oriented to keep both blocks out of each other's shadow line.">
+              <div class="work-v2-media relative w-full h-[200px] sm:h-[260px] lg:h-[320px] xl:h-[360px] overflow-hidden rounded-[2px] bg-[#e9e9e2]">
+                <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1000&q=80" alt="Onda Twin Towers">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+       <button type="button" aria-label="Previous project" class="works-v2-prev flex absolute top-1/2 -translate-y-1/2 left-1 sm:left-2 lg:-left-4 items-center justify-center size-9 sm:size-12 rounded-full bg-white shadow-md text-black hover:bg-black hover:text-white transition-colors duration-300 z-10">
+  <i class="ri-arrow-left-line text-[16px] sm:text-[18px]"></i>
+</button>
+<button type="button" aria-label="Next project" class="works-v2-next flex absolute top-1/2 -translate-y-1/2 right-1 sm:right-2 lg:-right-4 items-center justify-center size-9 sm:size-12 rounded-full bg-white shadow-md text-black hover:bg-black hover:text-white transition-colors duration-300 z-10">
+  <i class="ri-arrow-right-line text-[16px] sm:text-[18px]"></i>
+</button>
+      </div>
+
+      <!-- Active-slide content panel -->
+      <div class="mt-10 lg:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+        <div class="lg:col-span-5">
+          <h3 id="worksV2Title" class="text-[26px] sm:text-[32px] lg:text-[38px] font-primary font-medium leading-[1.15] text-[#111] transition-opacity duration-300">
+            Onda Concrete Study
+          </h3>
+          <div id="worksV2Tags" class="flex flex-wrap gap-3 mt-5"></div>
+        </div>
+        <div class="lg:col-span-5">
+          <p id="worksV2Desc" class="text-[15px] leading-[26px] text-[#666] transition-opacity duration-300">
+            A raw-concrete residence built around a single sculptural courtyard wall, letting light fall differently through every room across the day.
+          </p>
+        </div>
+        <!-- <div class="lg:col-span-2 flex lg:justify-end">
+          <a href="#!" class="arrow-btn w-full lg:w-auto relative h-12 md:h-[54px] bg-black font-normal font-primary px-8 text-[15px] inline-flex leading-none items-center justify-center gap-4 text-white">
+            <span>Read More</span>
+          </a>
+        </div> -->
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const worksV2Swiper = new Swiper('.works-v2-swiper', {
+  centeredSlides: true,
+  loop: false,
+  slidesPerView: 1,          // ✅ mobile: full-width, no bleed
+  spaceBetween: 16,
+  speed: 650,
+  grabCursor: true,
+  watchSlidesProgress: true,
+
+  autoplay: {                 // ✅ auto-slide every few seconds
+    delay: 3500,
+    disableOnInteraction: false, // manual swipe ke baad bhi autoplay chalta rahega
+    pauseOnMouseEnter: true,     // hover pe pause — desktop pe nice touch
+  },
+
+  breakpoints: {
+    640:  { slidesPerView: 1.4,  spaceBetween: 24 }, // peek effect yahan se start
+    1024: { slidesPerView: 1.8,  spaceBetween: 32 },
+    1280: { slidesPerView: 2.2,  spaceBetween: 40 },
+  },
+
+  navigation: {
+    nextEl: '.works-v2-next',
+    prevEl: '.works-v2-prev',
+  },
+
+  on: {
+    init: syncActiveSlide,
+    slideChange: syncActiveSlide,
+    setTransition: applyDepthStyles,
+    progress: applyDepthStyles,
+  },
+});
+
+  function applyDepthStyles(swiper) {
+    swiper.slides.forEach((slideEl) => {
+      const progress = slideEl.progress;
+      const distance = Math.min(Math.abs(progress), 2);
+      const scale = 1 - distance * 0.12;
+      const opacity = 1 - distance * 0.35;
+      slideEl.style.transform = `scale(${Math.max(scale, 0.72)})`;
+      slideEl.style.opacity = Math.max(opacity, 0.25);
+    });
+  }
+
+  function syncActiveSlide(swiper) {
+    const activeSlide = swiper.slides[swiper.activeIndex];
+    if (!activeSlide) return;
+
+    const title = activeSlide.dataset.title || '';
+    const desc  = activeSlide.dataset.desc  || '';
+    const tags  = (activeSlide.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+
+    const titleEl = document.getElementById('worksV2Title');
+    const descEl  = document.getElementById('worksV2Desc');
+    const tagsEl  = document.getElementById('worksV2Tags');
+
+    [titleEl, descEl].forEach(el => el.style.opacity = 0);
+
+    setTimeout(() => {
+      titleEl.textContent = title;
+      descEl.textContent  = desc;
+      tagsEl.innerHTML = tags.map(tag =>
+        `<span class="text-[13px] font-secondary text-[#666] border border-[#11111126] rounded-full px-4 py-1.5">${tag}</span>`
+      ).join('');
+      titleEl.style.opacity = 1;
+      descEl.style.opacity  = 1;
+    }, 180);
+  }
+
+  // ✅ hide arrows automatically when the filtered set can't actually scroll
+  function toggleNavVisibility(swiper) {
+    const prevBtn = document.querySelector('.works-v2-prev');
+    const nextBtn = document.querySelector('.works-v2-next');
+    const canScroll = !(swiper.isBeginning && swiper.isEnd);
+    prevBtn.style.display = canScroll ? '' : 'none';
+    nextBtn.style.display = canScroll ? '' : 'none';
+  }
+
+  const tabs = document.querySelectorAll('.work-v2-tab');
+  const allItems = document.querySelectorAll('.work-v2-item');
+
+  function updateCounts() {
+    tabs.forEach(tab => {
+      const filter = tab.dataset.filter;
+      const count = filter === 'all'
+        ? allItems.length
+        : Array.from(allItems).filter(el => el.dataset.category.split(' ').includes(filter)).length;
+      tab.querySelector('sup').textContent = count;
+    });
+  }
+
+  function applyFilter(filter) {
+    allItems.forEach(el => {
+      const match = filter === 'all' || el.dataset.category.split(' ').includes(filter);
+      el.style.display = match ? '' : 'none';
+    });
+    worksV2Swiper.update();
+    worksV2Swiper.slideTo(0, 0);   // no more slideToLoop, loop is off
+    syncActiveSlide(worksV2Swiper);
+    toggleNavVisibility(worksV2Swiper);
+  }
+
+ tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active', 'border-black', 'text-[#111]'));
+    tabs.forEach(t => t.classList.add('border-transparent'));
+    tab.classList.remove('border-transparent');
+    tab.classList.add('active', 'border-black', 'text-[#111]');
+    applyFilter(tab.dataset.filter);
+  });
+});
+
+  updateCounts();
+  toggleNavVisibility(worksV2Swiper);
+})();
+</script>
     
 
 
@@ -1364,21 +1735,27 @@ bg-bottom bg-center bg-no-repeat
 
    <section class="bg-white overflow-hidden py-10">
 
-  <style>
-    @keyframes marquee-scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+ <style>
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  .marquee-track {
+    animation: marquee-scroll 25s linear infinite;
+  }
+  .marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .max-w-8xl {
+    max-width: 88rem; /* adjust as needed */
+  }
+
+  @media (max-width: 767px) {
     .marquee-track {
-      animation: marquee-scroll 25s linear infinite;
+      animation-duration: 8s;
     }
-    .marquee-wrapper:hover .marquee-track {
-      animation-play-state: paused;
-    }
-    .max-w-8xl {
-      max-width: 88rem; /* adjust as needed */
-    }
-  </style>
+  }
+</style>
 
   <div class="marquee-wrapper max-w-8xl mx-auto w-full overflow-hidden">
     <div class="marquee-track    flex items-center whitespace-nowrap ">
@@ -1414,7 +1791,7 @@ bg-bottom bg-center bg-no-repeat
       </main>
 
     <!--  Footer Section  -->
-<footer  class="footer-frame bg-black">
+<footer  class="footer-frame bg-black ">
   <div class="pt-[80px] sm:pt-[100px] lg:pt-[120px] pb-[100px]">
     <div class="max-w-8xl mx-auto px-[15px]">
  
@@ -1588,6 +1965,40 @@ bg-bottom bg-center bg-no-repeat
 
   
   <script src="/assets/js/main.js"></script>
+  <script>
+(function () {
+  const stickyHeader = document.getElementById('siteHeaderSticky');
+  const SHOW_AFTER = 200; // isse pehle sticky bilkul nahi dikhega
+
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function handleScroll() {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY <= SHOW_AFTER) {
+      // top ke paas hi ho -> sticky hidden, original header khud dikh raha hai
+      stickyHeader.classList.add('-translate-y-full');
+    } else if (currentScrollY > lastScrollY) {
+      // scrolling down -> sticky bhi hide
+      stickyHeader.classList.add('-translate-y-full');
+    } else {
+      // scrolling up -> sticky white nav slide down
+      stickyHeader.classList.remove('-translate-y-full');
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(handleScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+</script>
 </body>
 
 </html>
