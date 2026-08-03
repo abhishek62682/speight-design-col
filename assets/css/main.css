@@ -159,8 +159,5 @@ body {
     .works-v2-swiper .swiper-slide { transition: none; }
   }
 
-  @media (max-width: 767px) {
-    body {
-      padding-bottom: 8svh;
-    }
-  }
+ 
+  
